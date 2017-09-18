@@ -1,25 +1,16 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../actions/recipes'
 
 class RecipesList extends PureComponent {
-  state = {
-    recipes: [],
-  }
-
-  componentDidMount = async () => {
-    const response = await fetch('http://localhost:5000/recipes', {
-      method: 'GET',
-      headers: { accept: 'application/json' },
-    })
-    const recipes = await response.json()
-    this.setState({
-      recipes,
-    })
+  componentDidMount = () => {
+    this.props.fetchRecipes()
   }
 
   render() {
     return (
       <div>
-        {this.state.recipes.map(recipe => (
+        {this.props.recipes.map(recipe => (
           <div key={recipe.id}>{recipe.name}</div>
         ))}
       </div>
@@ -27,4 +18,10 @@ class RecipesList extends PureComponent {
   }
 }
 
-export default RecipesList
+const mapStateToProps = state => {
+  return {
+    recipes: state.recipes,
+  }
+}
+
+export default connect(mapStateToProps, actions)(RecipesList)
