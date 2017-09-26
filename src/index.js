@@ -1,15 +1,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
+import {
+  ApolloClient,
+  ApolloProvider,
+  createNetworkInterface,
+} from 'react-apollo'
 
-import configureStore from 'store/configureStore'
 import App from 'components/App'
 
-const store = configureStore()
+const networkInterface = createNetworkInterface({
+  uri: 'http://localhost:4000/graphql',
+})
+
+const client = new ApolloClient({
+  networkInterface,
+})
 
 ReactDOM.render(
-  <Provider store={store}>
+  <ApolloProvider client={client}>
     <App />
-  </Provider>,
+  </ApolloProvider>,
   document.getElementById('root'),
 )

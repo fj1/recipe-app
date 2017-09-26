@@ -1,27 +1,30 @@
 import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../actions/recipes'
+import { gql, graphql } from 'react-apollo'
 
 class RecipesList extends PureComponent {
-  componentDidMount = () => {
-    this.props.fetchRecipes()
-  }
-
   render() {
+    console.log(this.props)
+    const { loading, recipes } = this.props.data
+
     return (
       <div>
-        {this.props.recipes.map(recipe => (
-          <div key={recipe.id}>{recipe.name}</div>
-        ))}
+        {loading ? (
+          <div>loading...</div>
+        ) : (
+          recipes.map(recipe => <div key={recipe.id}>{recipe.name}</div>)
+        )}
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    recipes: state.recipes,
+const recipesQuery = gql`
+  query AllRecipes {
+    recipes {
+      id
+      name
+    }
   }
-}
+`
 
-export default connect(mapStateToProps, actions)(RecipesList)
+export default graphql(recipesQuery)(RecipesList)
