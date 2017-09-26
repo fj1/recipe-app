@@ -1,16 +1,22 @@
 import uuid from 'uuid'
 
-const recipes = []
+import recipes from './recipes.json'
 
 export const resolvers = {
-  Query: { // Query maps to types in schema
-    recipes: () => recipes
+  Query: {
+    // Query maps to types in schema
+    recipes: () => {
+      return recipes.recipes.map(({ id, name }) => ({
+        id,
+        name,
+      }))
+    },
   },
   Mutation: {
-    addRecipe: (root, args) => {
-      const newRecipe = { id: uuid(), name: args.name}
+    addRecipe: (root, args, context) => {
+      const newRecipe = { id: uuid(), name: args.name }
       recipes.push(newRecipe)
       return newRecipe
-    }
-  }
+    },
+  },
 }
