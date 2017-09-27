@@ -4,7 +4,7 @@ import * as actions from '../actions/recipes'
 
 class RecipesList extends PureComponent {
   componentDidMount = () => {
-    this.props.fetchRecipes()
+    this.props.fetchRecipes(recipesQuery)
   }
 
   render() {
@@ -17,6 +17,14 @@ class RecipesList extends PureComponent {
     )
   }
 }
+
+const recipesQuery = `
+  query AllRecipes {
+    recipes {
+      id
+      name
+    }
+}`
 
 const mapStateToProps = state => {
   return {
